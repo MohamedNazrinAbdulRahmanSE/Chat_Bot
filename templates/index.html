@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Mahadha BankBot 🤖</title>
+    <link rel="stylesheet" href="/templates/style.css" />
+  </head>
+  <body>
+    <div class="chatbox">
+      <h2>Welcome to Mahadha BankBot 🤖</h2>
+      <div class="messages" id="messages"></div>
+      <div class="input-container">
+        <input type="text" id="userInput" placeholder="Type your message..." />
+        <button onclick="sendMessage()">Send</button>
+      </div>
+    </div>
+
+    <script>
+      function sendMessage() {
+        const userInput = document.getElementById("userInput").value;
+        if (userInput.trim() === "") return;
+
+        const messagesDiv = document.getElementById("messages");
+        messagesDiv.innerHTML += `<div class="user"><strong>You:</strong> ${userInput}</div>`;
+
+        // Simulate bot typing animation
+        const typingMessage = `<div class="bot typing-animation" id="botTyping">BankBot is typing...</div>`;
+        messagesDiv.innerHTML += typingMessage;
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+        setTimeout(() => {
+          fetch("/get_response", {
+            method: "POST",
+            body: JSON.stringify({ message: userInput }),
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "application/json",
+            },
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              document.getElementById("botTyping").remove();
+              messagesDiv.innerHTML += `<div class="bot"><strong>BankBot:</strong> ${data.response}</div>`;
+              messagesDiv.scrollTop = messagesDiv.scrollHeight;
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+              document.getElementById("botTyping").remove();
+              messagesDiv.innerHTML += `<div class="bot"><strong>BankBot:</strong> Oops! Something went wrong.</div>`;
+            });
+        }, 1500);
+
+        document.getElementById("userInput").value = "";
+
+        const politeResponses = [
+          "thank you",
+          "thanks",
+          "no, thank you",
+          "no thanks",
+          "okay, thanks",
+          "ok thanks",
+        ];
+
+        function handleUserInput(input) {
+          input = input.toLowerCase().trim();
+
+          if (politeResponses.includes(input)) {
+            return "You're welcome! 😊";
+          } else {
+            // your normal intent checking and response logic
+            // if still nothing matches:
+            return "I'm sorry, I didn't understand that. Can you please rephrase?";
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

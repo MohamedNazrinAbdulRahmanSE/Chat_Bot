@@ -1,0 +1,30 @@
+# Training data
+training_sentences = [
+    "Hello", "Hi", "Hey", "Good morning", "Good evening",
+    "What is my balance?", "Check my balance", "How much money do I have?",
+    "I want to transfer money", "Send money to someone", "Transfer funds",
+    "Show my recent transactions", "Transaction history", "Show my payments",
+    "Bye", "Goodbye", "Exit", "See you later"
+]
+
+# Labels for the sentences
+training_labels = [
+    "greet",
+    "greet",
+    "greet",
+    "greet",
+    "greet",
+    "check_balance",
+    "check_balance",
+    "check_balance",
+    "transfer_money",
+    "transfer_money",
+    "transfer_money",
+    "transaction_history",
+    "transaction_history",
+    "transaction_history",
+    "exit",
+    "exit",
+    "exit",
+    "exit"
+]
